@@ -25,9 +25,14 @@ export class ProductService {
   }
 
   create(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.baseUrl, product).pipe(
+    if (product.name === '' || product.price === null) {
+      this.showMessage("Informe todos os campos", true)
+    } else {
+      return this.http.post<Product>(this.baseUrl, product).pipe(
       map((obj) => obj),
       catchError(e => this.errorHandler(e)))
+    }
+    
   }
 
   errorHandler(e: any): Observable<any> {
